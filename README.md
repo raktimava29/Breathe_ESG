@@ -42,6 +42,41 @@ docker compose up --build
 
 API: http://localhost:8000/api/
 
+## Deploy on Render (single web service, no Blueprint)
+
+1. Create **PostgreSQL** on Render → copy **Internal Database URL**.
+2. Create **Web Service** (Python) from your GitHub repo.
+
+**Build command:**
+
+```bash
+pip install -r requirements.txt && cd frontend && npm ci && npm run build && cd ../backend && python manage.py collectstatic --noinput
+```
+
+**Start command:**
+
+```bash
+bash scripts/render_start.sh
+```
+
+**Environment variables:**
+
+| Key | Value |
+|-----|--------|
+| `DATABASE_URL` | Internal Database URL from Postgres |
+| `DJANGO_SECRET_KEY` | long random string (see below) |
+| `DEBUG` | `false` |
+| `ALLOWED_HOSTS` | `*` or your `*.onrender.com` hostname |
+| `DB_SSL_REQUIRE` | `false` (leave unset unless you know you need it) |
+
+Do **not** set `PYTHONPATH=backend` when using `scripts/render_start.sh` (it sets `PYTHONPATH=.` inside `backend/`).
+
+Generate a secret key:
+
+```powershell
+python -c "import secrets; print(secrets.token_urlsafe(64))"
+```
+
 ## API headers
 
 All tenant-scoped routes require:

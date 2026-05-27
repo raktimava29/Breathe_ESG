@@ -78,9 +78,10 @@ DATABASES = {
 }
 
 if os.environ.get("DATABASE_URL"):
+    # Trust sslmode in DATABASE_URL (Render sets this). Forcing ssl_require often breaks.
     DATABASES["default"] = dj_database_url.config(
         conn_max_age=600,
-        ssl_require=os.environ.get("DB_SSL_REQUIRE", "true").lower() == "true",
+        ssl_require=os.environ.get("DB_SSL_REQUIRE", "false").lower() == "true",
     )
 
 if os.environ.get("USE_SQLITE", "").lower() == "true":
@@ -103,10 +104,8 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [
-    # React build output assets (when deployed as single service)
-    REPO_ROOT / "frontend" / "dist" / "assets",
-]
+_frontend_assets = REPO_ROOT / "frontend" / "dist" / "assets"
+STATICFILES_DIRS = [_frontend_assets] if _frontend_assets.is_dir() else []
 STORAGES = {
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",

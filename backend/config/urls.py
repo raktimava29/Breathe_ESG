@@ -10,5 +10,6 @@ urlpatterns = [
     path("api/", include("records.urls")),
     path("api/", include("tenants.urls")),
     # React SPA deep links (e.g. /review/123) should return index.html when built.
-    re_path(r"^(?!api/|admin/).*", root, name="spa-fallback"),
+    # IMPORTANT: exclude static asset paths so JS/CSS aren't served as HTML.
+    re_path(r"^(?!api/|admin/|static/|assets/).*", root, name="spa-fallback"),
 ]

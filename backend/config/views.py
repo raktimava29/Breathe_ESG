@@ -1,7 +1,15 @@
-from django.http import JsonResponse
+from pathlib import Path
+
+from django.conf import settings
+from django.http import FileResponse, JsonResponse
 
 
 def root(request):
+    # Single-service deploy: if a React build exists, serve it as the app shell.
+    index_path = Path(settings.BASE_DIR).parent / "frontend" / "dist" / "index.html"
+    if index_path.exists():
+        return FileResponse(open(index_path, "rb"), content_type="text/html")
+
     return JsonResponse(
         {
             "service": "Breathe ESG API",

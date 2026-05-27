@@ -104,8 +104,8 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-_frontend_assets = REPO_ROOT / "frontend" / "dist" / "assets"
-STATICFILES_DIRS = [_frontend_assets] if _frontend_assets.is_dir() else []
+_frontend_dist = REPO_ROOT / "frontend" / "dist"
+STATICFILES_DIRS = [_frontend_dist] if _frontend_dist.is_dir() else []
 STORAGES = {
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",

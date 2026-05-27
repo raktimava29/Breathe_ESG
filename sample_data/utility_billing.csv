@@ -1,0 +1,4 @@
+Account Number,Meter ID,Service From,Service To,Total kWh,Rate Schedule,Amount Due,Provider
+ACC-99821,MTR-44102,2024-01-18,2024-02-16,"125,430.00",GS-TOU-Commercial,"18,442.50",Pacific Grid Co
+ACC-99821,MTR-44102,2023-12-14,2024-01-17,"98,200.5",GS-TOU-Commercial,"14,201.00",Pacific Grid Co
+ACC-77210,MTR-11900,2024-03-01,2024-03-31,45000,IND-SECONDARY,6200.00,Mountain Power

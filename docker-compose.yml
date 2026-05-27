@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: breathe_esg
+      POSTGRES_USER: breathe
+      POSTGRES_PASSWORD: breathe
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_DB: breathe_esg
+      POSTGRES_USER: breathe
+      POSTGRES_PASSWORD: breathe
+      DEBUG: "true"
+      ALLOWED_HOSTS: "*"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py seed_demo &&
+             gunicorn config.wsgi:application --bind 0.0.0.0:8000"
+
+volumes:
+  pgdata:
